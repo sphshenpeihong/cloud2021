@@ -12,6 +12,7 @@
     <!-- 子module -->
     <modules>
         <module>cloud-provider-payment8001</module>
+        <module>cloud-consumer-order80</module>
     </modules>
 
     <!-- 统一管理jar包版本 -->
@@ -121,5 +122,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
