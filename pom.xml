@@ -112,12 +112,24 @@
         </dependencies>
     </dependencyManagement>
 
+
+    <dependencies>
+        <!-- 对应打jar包插件 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-maven-plugin</artifactId>
+            <version>2.3.3.RELEASE</version>
+        </dependency>
+    </dependencies>
+
+
     <build>
         <plugins>
             <!-- 支持打jar包插件 -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.3.RELEASE</version>
                 <configuration>
                     <fork>true</fork>
                     <addResources>true</addResources>
