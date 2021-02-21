@@ -21,6 +21,12 @@
             <version>${project.version}</version>
         </dependency>
 
+        <!-- 引入eureka-client -->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+        </dependency>
+
         <!-- springboot整合mybatis -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
