@@ -5,3 +5,18 @@ spring:
   application:
     name: cloud-order-service
 
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    region: gz
+    availability-zones:
+      gz: zone1,zone2
+    service-url:
+      zone1: http://eureka7001.com:7001/eureka/
+      zone2: http://eureka7002.com:7002/eureka/
+  instance:
+    # 注册中心隐藏主机名 + 右边自定义名称
+    instance-id: order
+    prefer-ip-address: true
+

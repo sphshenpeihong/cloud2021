@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping(value = "/order")
 public class OrderCtl {
 
-    private final static String PAYMENT_URL = "http://localhost:8001";
+    private final static String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
 
     @Resource
     private RestTemplate restTemplate;

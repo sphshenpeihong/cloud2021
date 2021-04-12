@@ -1,9 +1,11 @@
 server:
   port: 7001
 
+# 注册中心服务端一般不需要写spring.application.name，一般是客户端，需要被注册到注册中心中的服务才需要写这个服务的名称
+
 eureka:
   instance:
-    hostname: localhost #eureka服务端的实例名称
+    hostname: eureka7001.com #eureka服务端的主机名称
   client:
     #false表示不向注册中心注册自己
     register-with-eureka: false
@@ -11,4 +13,25 @@ eureka:
     fetch-registry: false
     service-url:
       #设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址。
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://eureka7002.com:7002/eureka/
+
+
+    #region: js
+    # availability-zones:
+    #  js: zone1,zone2
+    # service-url:
+    #  zone1: http://${eureka.instance.hostname}:7002/eureka
+    #  zone2: http://${eureka.instance.hostname}:7003/eureka
+
+# 详细讲一下这里的service-url和defaultZone
+# 这里的service-url就是eureka.client映射的实体类的属性，但是defaultZone不是service-url这个属性里边的属性
+# service-url对应属性的类型其实是个Map来的，defaultZone就是Map其中的一个键值对
+
+# 如果我们没有配availability-zones的话，那么直接会默认去找service-url这个Map下面的defaultZone这个键值对，如果我们不想这个Key的名字叫defaultZone的话
+# 那直接region、availability-zones、js直接三个配置都需要改。
+
+
+
+
+
+
