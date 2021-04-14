@@ -28,7 +28,10 @@ eureka:
     # 注册中心隐藏主机名 + 右边自定义名称
     instance-id: payment8001
     prefer-ip-address: true
-
+    # 客户端每1秒向注册中心发送一次心跳请求
+    lease-renewal-interval-in-seconds: 1
+    # eureka服务端收到最后一次心跳后等待时间上限，单位为秒(默认90秒)，超时将剔除服务
+    lease-expiration-duration-in-seconds: 2
 
 # mybatis
 mybatis:

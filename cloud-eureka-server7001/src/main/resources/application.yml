@@ -17,12 +17,20 @@ eureka:
       #defaultZone: http://eureka7002.com:7002/eureka/
       # 单机
       defaultZone: http://eureka7001.com:7001/eureka/
+    # 不使用defaultZone，用自定义的zone
     #region: js
     # availability-zones:
     #  js: zone1,zone2
     # service-url:
     #  zone1: http://${eureka.instance.hostname}:7002/eureka
     #  zone2: http://${eureka.instance.hostname}:7003/eureka
+  server:
+    # 关闭自我保护机制
+    enable-self-preservation: false
+    # 服务过期时间间隔（规定时间间隔内，客户端没有向服务端发送心跳，即该客户端就过期）
+    eviction-interval-timer-in-ms: 2000
+
+
 
 # 详细讲一下这里的service-url和defaultZone
 # 这里的service-url就是eureka.client映射的实体类的属性，但是defaultZone不是service-url这个属性里边的属性
