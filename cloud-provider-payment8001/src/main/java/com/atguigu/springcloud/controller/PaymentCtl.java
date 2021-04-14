@@ -4,10 +4,13 @@ import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.service.PaymentService;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by Shen Peihong on 2021/2/20
@@ -24,6 +27,9 @@ public class PaymentCtl {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @Resource
+    private DiscoveryClient discoveryClient;
 
     // 由于该接口需要给客户端调用，客户端的请求头Content-Type：application/json，故这里不将json类型转java类型的话，是接收不到参数的。
     // 但这里有一个缺点就是，加了@RequestBody之后，以后凡是调这个接口的请求头格式一定需要是json了，不然会报400
@@ -48,6 +54,30 @@ public class PaymentCtl {
         }
     }
 
+    // discoveryClient对象存储了注册中心中所注册的服务清单详细信息，获取后提供接口对外暴露
+    @GetMapping("/discovery")
+    public Object discovery() {
+        // 获取注册中心中所注册的服务名称列表
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            System.out.println("服务名称：" + service);
+            /*
+                服务名称：cloud-order-service
+                服务名称：cloud-payment-service
+             */
+        }
 
+        // 获取指定某个服务的详细信息
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        for (ServiceInstance instance : instances) {
+            System.out.println(instance.getServiceId() + "，" + instance.getScheme() + "，" + instance.getHost() + "，"
+                              + instance.getPort() + "，" + instance.getUri());
+            /*
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8002，http://192.168.43.247:8002
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8001，http://192.168.43.247:8001
+             */
+        }
+        return this.discoveryClient;
+    }
 
 }
