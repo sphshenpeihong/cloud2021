@@ -20,7 +20,8 @@ eureka:
     # 集群必须设置为true，才能配合ribbon使用负载均衡
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群eureka
+      #defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka  # 集群eureka
+      defaultZone: http://eureka7001.com:7001/eureka # 单机
   instance:
     # 注册中心隐藏主机名 + 右边自定义名称
     instance-id: payment8002
