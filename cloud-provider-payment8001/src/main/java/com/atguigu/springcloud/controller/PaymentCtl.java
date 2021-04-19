@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Shen Peihong on 2021/2/20
@@ -34,7 +35,7 @@ public class PaymentCtl {
     // 由于该接口需要给客户端调用，客户端的请求头Content-Type：application/json，故这里不将json类型转java类型的话，是接收不到参数的。
     // 但这里有一个缺点就是，加了@RequestBody之后，以后凡是调这个接口的请求头格式一定需要是json了，不然会报400
     @PostMapping(value = "/create")
-    public CommonResult create(HttpServletRequest request, @RequestBody Payment payment){
+    public CommonResult create(@RequestBody Payment payment){
         int row = paymentService.create(payment);
         if (row > 0){
             return new CommonResult(200, "插入成功，当前服务的端口serverPort：" + serverPort, payment.getId());
@@ -43,8 +44,8 @@ public class PaymentCtl {
         }
     }
 
-    @GetMapping(value = "/getPaymentById/{id}")
-    public CommonResult getPaymentById(HttpServletRequest request,@PathVariable(name = "id") Long id){
+    @RequestMapping(value = "/getPaymentById/{id}")
+    public CommonResult getPaymentById(HttpServletRequest request, @PathVariable(name = "id") Long id){
         String header = request.getHeader("Content-Type");
         Payment payment = paymentService.getPaymentById(id);
         if (payment != null){
@@ -56,7 +57,8 @@ public class PaymentCtl {
 
     // discoveryClient对象存储了注册中心中所注册的服务清单详细信息，获取后提供接口对外暴露
     @GetMapping("/discovery")
-    public Object discovery() {
+    public Object discovery() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
         // 获取注册中心中所注册的服务名称列表
         List<String> services = discoveryClient.getServices();
         for (String service : services) {
