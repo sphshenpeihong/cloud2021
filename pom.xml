@@ -13,7 +13,6 @@
     <!-- 子module -->
     <!--<modules>
         <module>cloud-provider-payment8001</module>
-        <module>cloud-provider-payment8002</module>
         <module>cloud-consumer-order80</module>
         <module>cloud-api-commons</module>
         <module>cloud-eureka-server7001</module>
@@ -22,6 +21,8 @@
         <module>cloud-consumerzk-order80</module>
         <module>cloud-providerconsul-payment8006</module>
         <module>cloud-consumer-openfeign-order80</module>
+        <module>cloud-provider-hystrix-payment8008</module>
+        <module>cloud-comsumer-feign-hystrix-order80</module>
     </modules>-->
 
     <!-- 统一管理jar包版本 -->
