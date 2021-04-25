@@ -23,9 +23,9 @@ public class HystrixCurcuitBreakerServiceImpl implements HystrixCurcuitBreakerSe
     // 服务降级 -> 服务熔断 -> 恢复调用链路
     @HystrixCommand(fallbackMethod = "fallbackMethod", commandProperties = {
             @HystrixProperty(name = "circuitBreaker.enabled", value = "true"), // 开启断路器
-            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"), // 十次请求
-            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"), // 时间窗口期
-            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60") // 阈值：百分之六十
+            @HystrixProperty(name = "circuitBreaker.requestVolumeThreshold", value = "10"), // 请求总数阈值
+            @HystrixProperty(name = "circuitBreaker.sleepWindowInMilliseconds", value = "10000"), // 快照时间窗
+            @HystrixProperty(name = "circuitBreaker.errorThresholdPercentage", value = "60") // 错误百分比阈值
     })
     public String curcuitBreakerOK(Integer id) {
         if (id <= 0){
