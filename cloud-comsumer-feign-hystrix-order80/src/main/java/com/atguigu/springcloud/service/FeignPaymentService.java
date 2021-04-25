@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @version: 1.0
  * @date 2021/4/22
  */
-@FeignClient(value = "CLOUD-PAYMENT-HYSTRIX")
+// fallback书写承包feign接口fallback的方法的类的反射
+@FeignClient(value = "CLOUD-PAYMENT-HYSTRIX", fallback = PaymentFallBackService.class)
 public interface FeignPaymentService {
 
     @GetMapping("/hystrix/ok")

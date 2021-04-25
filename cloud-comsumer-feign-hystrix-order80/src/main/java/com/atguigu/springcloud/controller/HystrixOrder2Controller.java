@@ -21,9 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 public class HystrixOrder2Controller {
 
     @Resource
-    private HttpServletRequest request;
-
-    @Resource
     private FeignPaymentService feignPaymentService;
 
     @GetMapping("/order/feign/ok2")
