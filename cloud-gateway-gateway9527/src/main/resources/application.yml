@@ -27,6 +27,9 @@ spring:
             # - Method=Get
             # 需要入参有username，并且对应的值要为整数才行
             # Query=username, \d+
+
+          # 网关过滤器(可以在路由转发前后做一些事情,一些常常干的事情，可以使用GatewayFilter提供的，如下添加请求参数)
+          # 但是我们一般都是自定义过滤器，把想做的事情都用代码写出来，比如全局日志记录、鉴权
           filters:
             # 过滤器工厂会在匹配的请求参数上加上一对请求参数，名称为X-Reuqest-Id，值为1024
             - AddRequestParameter=X-Request-Id,1024

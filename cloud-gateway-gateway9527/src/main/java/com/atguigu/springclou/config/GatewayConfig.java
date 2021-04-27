@@ -19,6 +19,12 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class GatewayConfig {
 
+    /**
+     * 配置路由转发规则
+     *
+     * @param routeLocatorBuilder
+     * @return
+     */
     @Bean
     public RouteLocator routeLocator(RouteLocatorBuilder routeLocatorBuilder){
         // 断言只要匹配上（一般/前缀/**），那么就会去转发到指望的网段（请求后缀仍然不变，拼接到转发网段之后）
