@@ -1,0 +1,31 @@
+package com.atguigu.springcloud.service.impl;
+
+import com.atguigu.springcloud.dao.PaymentDao8003;
+import com.atguigu.springcloud.entities.Payment;
+import com.atguigu.springcloud.service.PaymentService;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+
+/**
+ * Created by Shen Peihong on 2021/2/20
+ * Description:
+ *
+ * @since 1.0.0
+ */
+@Service("paymentService")
+public class PaymentServiceImpl implements PaymentService {
+
+    @Resource
+    private PaymentDao8003 paymentDao8003;
+
+    @Override
+    public int create(Payment payment) {
+        return paymentDao8003.create(payment);
+    }
+
+    @Override
+    public Payment getPaymentById(Long id) {
+        return paymentDao8003.getPaymentById(id);
+    }
+}

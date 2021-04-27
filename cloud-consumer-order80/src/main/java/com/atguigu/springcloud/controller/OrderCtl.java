@@ -95,7 +95,7 @@ public class OrderCtl {
     @GetMapping("httpClient2")
     public CommonResult httpClient2() {
 
-        String url = "http://localhost:8001/payment/create";
+        String url = "http://localhost:8001/cloud-payment/payment/create";
         Payment payment = new Payment();
         payment.setSerial("好样1");
         String jsonString = JSON.toJSONString(payment);

@@ -1,0 +1,33 @@
+server:
+  port: 9527
+
+spring:
+  application:
+    name: cloud-gateway-servce
+  cloud:
+    gateway:
+      # lb 负载均衡
+      #discovery:
+      #  locator:
+      #    enabled: true
+      routes:
+        - id: cloud-payment
+          # 转发地址
+          uri: lb://cloud-payment-service
+          # 断言
+          predicates:
+            - Path=/cloud-payment/**
+        - id: cloud-order
+          uri: lb://cloud-order-service
+          predicates:
+            - Path=/cloud-order/**
+eureka:
+  instance:
+    hostname: ${spring.cloud.client.ip-address}
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+    prefer-ip-address: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:7001/eureka/

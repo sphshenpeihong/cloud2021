@@ -1,5 +1,7 @@
 server:
   port: 80
+  servlet:
+    context-path: /cloud-order
 
 spring:
   application:
