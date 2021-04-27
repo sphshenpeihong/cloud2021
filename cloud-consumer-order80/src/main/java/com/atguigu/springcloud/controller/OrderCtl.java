@@ -31,7 +31,9 @@ import java.io.IOException;
 @RequestMapping(value = "/order")
 public class OrderCtl {
 
-    private final static String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
+    // HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+    private final static String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE/cloud-payment";
 
     @Resource
     private RestTemplate restTemplate;

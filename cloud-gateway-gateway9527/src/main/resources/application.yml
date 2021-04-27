@@ -6,7 +6,7 @@ spring:
     name: cloud-gateway-servce
   cloud:
     gateway:
-      # lb 负载均衡
+      # lb 负载均衡 (貌似不加这个，下面也可以负载均衡成功)
       #discovery:
       #  locator:
       #    enabled: true
@@ -21,6 +21,15 @@ spring:
           uri: lb://cloud-order-service
           predicates:
             - Path=/cloud-order/**
+            # 说明请求得带上Cookie，并且需要有属性username=123（右边是正则表达式，可以定值，也可以变值），如果不按要求传，断言匹配不到直接404
+            # - Cookie=username,123
+            # - Header=X-Request-Id, \d+
+            # - Method=Get
+            # 需要入参有username，并且对应的值要为整数才行
+            # Query=username, \d+
+          filters:
+            # 过滤器工厂会在匹配的请求参数上加上一对请求参数，名称为X-Reuqest-Id，值为1024
+            - AddRequestParameter=X-Request-Id,1024
 eureka:
   instance:
     hostname: ${spring.cloud.client.ip-address}
