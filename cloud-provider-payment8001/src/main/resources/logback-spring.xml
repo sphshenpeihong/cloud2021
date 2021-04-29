@@ -1,0 +1,126 @@
+﻿<configuration debug="true" scan="true" scanPeriod="30 minutes">
+
+	<!-- 应用程序的名称，该名称从spring的application.yml获取。备注：如果是生产或者测试环境，则需要设置JVM参数（-Dspring.application.name） ，并从中获取-->
+	<springProperty scope="context" name="appName" source="spring.application.name" defaultValue="tpp"/>
+	<!-- 在非开发环境，是否输出控制台日志，该参数从JVM参数(-Dlogback.enableConsoleLogWhenNotInDev)直接获取,仅用于线上调试 -->
+	<springProperty scope="context" name="enableConsoleLog" source="logback.enableConsoleLogWhenNotInDev" defaultValue="false"/>
+	<!-- 日志文件存放目录 -->
+	<springProperty scope="context" name="logFileDir" source="logback.logFileDir"/>
+
+	<!-- 目前约定profile：dev:开发, test:测试, produce:生产 -->
+
+	<!-- 当前日志存放路径（路径末尾不要带“/”）,设置默认值 -->
+	<property name="LOG_FILE_DIR" value="${logFileDir}/${appName}" />
+	<!-- 历史归档日志存放路径（路径末尾不要带“/”）,设置默认值 -->
+	<property name="HIS_LOG_FILE_DIR" value="${logFileDir}/${appName}/history" />
+
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<!-- encoder 默认配置为PatternLayoutEncoder -->
+		<encoder>
+			<pattern>%d{MM-dd HH:mm:ss.SSS}|%highlight(%level)|%logger{36}:%line|%thread|%X{trackNo}|%msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<if condition='property("logFileDir") != null &amp;&amp; !property("logFileDir").isEmpty() &amp;&amp; !"bootstrap".equals(property("appName"))'>
+		<then>
+			<!-- 文件输出 -->
+			<appender name="bizLogFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+				<file>${LOG_FILE_DIR}/debug.log</file>
+				<append>true</append>
+				<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+					<fileNamePattern>${HIS_LOG_FILE_DIR}/%d{yyyy-MM/dd}-debug.gz</fileNamePattern>
+				</rollingPolicy>
+				<encoder>
+					<pattern>%d{MM-dd HH:mm:ss.SSS}|%level|%logger{36}|%thread|%X{trackNo}|%msg%n</pattern>
+				</encoder>
+			</appender>
+
+			<appender name="asyncBizLoggerAppender" class="ch.qos.logback.classic.AsyncAppender">
+				<discardingThreshold>0</discardingThreshold>
+				<queueSize>512</queueSize>
+				<neverBlock>true</neverBlock>
+				<appender-ref ref="bizLogFile" />
+			</appender>
+		</then>
+	</if>
+
+	<!-- http://www.cnblogs.com/tankaixiong/archive/2013/03/08/2949857.html -->
+	<logger name="org.springframework">
+		<level value="INFO" />
+	</logger>
+
+	<logger name="com.alibaba.druid.pool" >
+		<level value="INFO" />
+	</logger>
+
+	<logger name="org.mybatis" >
+		<level value="INFO" />
+	</logger>
+	<logger name="mybatis.mapper" >
+		<level value="WARN" />
+	</logger>
+
+	<logger name="org.quartz" >
+		<level value="WARN" />
+	</logger>
+
+	<logger name="org.apache.activemq" >
+		<level value="INFO" />
+	</logger>
+
+	<logger name="io.netty" >
+		<level value="INFO" />
+	</logger>
+
+	<logger name="druid.sql.Connection">
+		<level value="INFO" />
+	</logger>
+	<logger name="druid.sql.Statement">
+		<level value="DEBUG" />
+	</logger>
+
+	<springProfile name="dev">
+		<logger name="druid.sql.ResultSet">
+			<level value="OFF" />
+		</logger>
+	</springProfile>
+	<springProfile name="test">
+		<logger name="druid.sql.ResultSet">
+			<level value="DEBUG" />
+		</logger>
+	</springProfile>
+	<springProfile name="produce">
+		<logger name="druid.sql.ResultSet">
+			<level value="OFF" />
+		</logger>
+	</springProfile>
+
+	<!-- feign请求日志 debug输出header，info仅输出 -->
+	<logger name="feign.client">
+		<level value="INFO" />
+	</logger>
+
+	<root level="INFO">
+		<springProfile name="dev">
+			<!-- 日志输出，STDOUT为控制台输出，一般适用于开发环境，其他环境建议去掉这个输出 -->
+			<appender-ref ref="STDOUT" />
+		</springProfile>
+
+		<springProfile name="!dev">
+			<if condition='"true".equals(property("enableConsoleLog"))'>
+				<then>
+					<appender-ref ref="STDOUT" />
+				</then>
+			</if>
+		</springProfile>
+
+		<if condition='property("logFileDir") != null &amp;&amp; !property("logFileDir").isEmpty() &amp;&amp; !"bootstrap".equals(property("appName"))'>
+			<then>
+				<!-- 日志输出，FILE为文件输出，非开发环境必须开启 -->
+				<appender-ref ref="asyncBizLoggerAppender" />
+			</then>
+		</if>
+	</root>
+
+</configuration>

@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: comsumer-openfeign-order
+  main:
+    # 支持定义多个Client接口使用@FeignClient注解调用同一个服务
+    allow-bean-definition-overriding: true
 
 eureka:
   client:

@@ -16,10 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 @FeignClient(value = "cloud-payment-service")
 public interface OpenfeignService {
 
-    @GetMapping(value = "/payment/getPaymentById/{id}")
-    public CommonResult getPaymentById(HttpServletRequest request, @PathVariable(name = "id") Long id);
+    @GetMapping(value = "/cloud-payment/payment/getPaymentById/{id}")
+    public CommonResult getPaymentById(@PathVariable(name = "id") Long id);
 
-    @GetMapping("/payment/discovery")
+    @GetMapping("/cloud-payment/payment/discovery")
     public Object discovery();
 
 }
