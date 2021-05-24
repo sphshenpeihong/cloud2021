@@ -5,6 +5,8 @@ server:
     context-path: /cloud-payment
 
 spring:
+  profiles:
+    active: dev
   application:
     name: cloud-payment-service
   datasource:
@@ -45,3 +47,6 @@ logback:
   enableConsoleLogWhenNotInDev: true
   #**日志文件存放目录，目录后面无需再加"/"。备注如果这项不配置，则不输出日志文件
   logFileDir: /data/logs
+
+
+# testUrl: 1

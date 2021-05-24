@@ -71,4 +71,23 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <!-- 支持打jar包插件 -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>2.3.3.RELEASE</version>
+                <!-- 加上这个，打完的jar包同级目录也会生成一个.original文件 -->
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
