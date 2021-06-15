@@ -2,10 +2,12 @@ package com.atguigu.springcloud.controller;
 
 import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
+import com.atguigu.springcloud.pojo.ParamVO;
 import com.atguigu.springcloud.service.PaymentService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.openfeign.SpringQueryMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -80,5 +82,69 @@ public class RePaymentCtl {
         return this.discoveryClient;
     }
 
+    /**
+     * 测试Get请求传参
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @GetMapping("/discovery1")
+    public Object discovery1(@SpringQueryMap ParamVO paramVO) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
+        // 获取注册中心中所注册的服务名称列表
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            System.out.println("服务名称：" + service);
+            /*
+                服务名称：cloud-order-service
+                服务名称：cloud-payment-service
+             */
+        }
+
+        // 获取指定某个服务的详细信息
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        for (ServiceInstance instance : instances) {
+            System.out.println(instance.getServiceId() + "，" + instance.getScheme() + "，" + instance.getHost() + "，"
+                                       + instance.getPort() + "，" + instance.getUri());
+            /*
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8002，http://192.168.43.247:8002
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8001，http://192.168.43.247:8001
+             */
+        }
+        return this.discoveryClient;
+    }
+
+    /**
+     * 测试Get请求传参，额外多加参数
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @GetMapping("/discovery3")
+    public Object discovery3(@SpringQueryMap ParamVO paramVO,
+                             @RequestParam("eventId") String eventId) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
+        // 获取注册中心中所注册的服务名称列表
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            System.out.println("服务名称：" + service);
+            /*
+                服务名称：cloud-order-service
+                服务名称：cloud-payment-service
+             */
+        }
+
+        // 获取指定某个服务的详细信息
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        for (ServiceInstance instance : instances) {
+            System.out.println(instance.getServiceId() + "，" + instance.getScheme() + "，" + instance.getHost() + "，"
+                                       + instance.getPort() + "，" + instance.getUri());
+            /*
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8002，http://192.168.43.247:8002
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8001，http://192.168.43.247:8001
+             */
+        }
+        return this.discoveryClient;
+    }
 
 }

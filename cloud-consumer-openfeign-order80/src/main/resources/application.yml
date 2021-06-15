@@ -1,12 +1,14 @@
 server:
   port: 80
+  servlet:
+    context-path: /${spring.application.name}
 
 spring:
   application:
     name: comsumer-openfeign-order
-  main:
+    #main:
     # 支持定义多个Client接口使用@FeignClient注解调用同一个服务
-    allow-bean-definition-overriding: true
+    #allow-bean-definition-overriding: true
 
 eureka:
   client:
