@@ -159,9 +159,6 @@ public class OrderCtl {
         String url = "http://localhost:8001/cloud-payment-service/payment/create";
         Payment payment = new Payment();
         payment.setSerial("好样1");
-        String jsonString = JSON.toJSONString(payment);
-        HashMap<String, String> paramMap = Maps.newHashMap();
-        paramMap.put("serial", "好样1");
         String resp = OkHttpUtil.builder()
                                 .url(url)
                                 .addParams(payment)
