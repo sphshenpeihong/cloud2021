@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.utils.http.HttpClientUtil;
+import com.atguigu.springcloud.utils.http.OkHttpUtil;
 import com.google.common.collect.Maps;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
@@ -125,5 +126,50 @@ public class OrderCtl {
         CommonResult commonResult = JSON.parseObject(respJsonString, CommonResult.class);
         return commonResult;
     }
+
+    /**
+     * OkHttp Get请求
+     *
+     * @return
+     */
+    @GetMapping("okHttp1")
+    public CommonResult okHttp1() {
+        String url = "http://localhost:8001/cloud-payment-service/payment/discovery1";
+        HashMap<String, String> paramMap = Maps.newHashMap();
+        String username = "123";
+        String password = "&";
+        paramMap.put("username", username);
+        paramMap.put("password", password);
+        String resp = OkHttpUtil.builder()
+                                .url(url)
+                                .addParams(paramMap)
+                                .get()
+                                .sync();
+        CommonResult commonResult = JSON.parseObject(resp, CommonResult.class);
+        return commonResult;
+    }
+
+    /**
+     * OkHttp Post请求
+     *
+     * @return
+     */
+    @GetMapping("okHttp2")
+    public CommonResult okHttp2() throws IllegalAccessException {
+        String url = "http://localhost:8001/cloud-payment-service/payment/create";
+        Payment payment = new Payment();
+        payment.setSerial("好样1");
+        String jsonString = JSON.toJSONString(payment);
+        HashMap<String, String> paramMap = Maps.newHashMap();
+        paramMap.put("serial", "好样1");
+        String resp = OkHttpUtil.builder()
+                                .url(url)
+                                .addParams(payment)
+                                .post(true)
+                                .sync();
+        CommonResult commonResult = JSON.parseObject(resp, CommonResult.class);
+        return commonResult;
+    }
+
 
 }
