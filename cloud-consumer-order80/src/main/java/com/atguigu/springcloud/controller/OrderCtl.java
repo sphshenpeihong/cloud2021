@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.atguigu.springcloud.entities.CommonResult;
 import com.atguigu.springcloud.entities.Payment;
 import com.atguigu.springcloud.utils.http.HttpClientUtil;
+import com.google.common.collect.Maps;
 import org.apache.http.HttpEntity;
 import org.apache.http.ParseException;
 import org.apache.http.client.ClientProtocolException;
@@ -20,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * Created by Shen Peihong on 2021/2/20
@@ -102,6 +104,24 @@ public class OrderCtl {
         payment.setSerial("好样1");
         String jsonString = JSON.toJSONString(payment);
         String respJsonString = HttpClientUtil.executePost(url, jsonString);
+        CommonResult commonResult = JSON.parseObject(respJsonString, CommonResult.class);
+        return commonResult;
+    }
+
+    /**
+     * HttpClient Get请求
+     *
+     * @return
+     */
+    @GetMapping("httpClient3")
+    public CommonResult httpClient3() {
+        String url = "http://localhost:8001/cloud-payment-service/payment/discovery1";
+        HashMap<String, String> paramMap = Maps.newHashMap();
+        String username = "123";
+        String password = "&";
+        paramMap.put("username", username);
+        paramMap.put("password", password);
+        String respJsonString = HttpClientUtil.executeGet(url, paramMap);
         CommonResult commonResult = JSON.parseObject(respJsonString, CommonResult.class);
         return commonResult;
     }

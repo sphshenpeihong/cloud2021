@@ -82,4 +82,37 @@ public class PaymentCtl {
         return this.discoveryClient;
     }
 
+    /**
+     * 测试专用，接收入参
+     *
+     * @return
+     * @throws InterruptedException
+     */
+    @GetMapping("/discovery1")
+    public Object discovery(@RequestParam(required = false) String username,
+                            @RequestParam(required = false) String password) throws InterruptedException {
+        TimeUnit.SECONDS.sleep(2);
+        // 获取注册中心中所注册的服务名称列表
+        List<String> services = discoveryClient.getServices();
+        for (String service : services) {
+            System.out.println("服务名称：" + service);
+            /*
+                服务名称：cloud-order-service
+                服务名称：cloud-payment-service
+             */
+        }
+
+        // 获取指定某个服务的详细信息
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        for (ServiceInstance instance : instances) {
+            System.out.println(instance.getServiceId() + "，" + instance.getScheme() + "，" + instance.getHost() + "，"
+                                       + instance.getPort() + "，" + instance.getUri());
+            /*
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8002，http://192.168.43.247:8002
+                CLOUD-PAYMENT-SERVICE，null，192.168.43.247，8001，http://192.168.43.247:8001
+             */
+        }
+        return this.discoveryClient;
+    }
+
 }
